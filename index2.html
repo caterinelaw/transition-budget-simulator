@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transition Budget & Life Design Simulator (£)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+    .bar { transition: width 0.6s ease; }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <header class="text-center mb-10">
+      <h1 class="text-3xl font-bold">Transition Budget & Life Design Simulator (£)</h1>
+      <p class="text-gray-600 mt-2">Quantify your runway and life‑design balance for a strategic relocation.</p>
+    </header>
+
+    <!-- Financial -->
+    <section class="bg-white p-8 rounded-lg shadow-md space-y-6">
+      <h2 class="text-xl font-semibold border-b pb-2">Financial Overview</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Monthly Revenue (£)</label>
+          <input id="revenue" type="number" placeholder="e.g. 7000"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">One-Time Relocation Costs (£)</label>
+          <input id="relocation" type="number" placeholder="e.g. 10000"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Other Recurring Costs (£/month)</label>
+          <input id="expenses" type="number" placeholder="e.g. 2500"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+      </div>
+    </section>
+
+    <!-- Housing -->
+    <section class="bg-white mt-8 p-8 rounded-lg shadow-md space-y-6">
+      <h2 class="text-xl font-semibold border-b pb-2">Housing & Living</h2>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div><label class="block text-sm font-medium text-gray-700">Rent / Mortgage (£)</label>
+          <input id="rent" type="number" placeholder="e.g. 1800"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500"></div>
+        <div><label class="block text-sm font-medium text-gray-700">Commute Cost (£)</label>
+          <input id="commute" type="number" placeholder="e.g. 250"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500"></div>
+        <div><label class="block text-sm font-medium text-gray-700">Utilities (£)</label>
+          <input id="utilities" type="number" placeholder="e.g. 200"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500"></div>
+        <div><label class="block text-sm font-medium text-gray-700">Council Tax (£)</label>
+          <input id="council" type="number" placeholder="e.g. 150"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500"></div>
+      </div>
+    </section>
+
+    <!-- Connectivity -->
+    <section class="bg-white mt-8 p-8 rounded-lg shadow-md space-y-6">
+      <h2 class="text-xl font-semibold border-b pb-2">Connectivity</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Commute Distance to London (miles)</label>
+          <input id="distanceLondon" type="number" placeholder="e.g. 120"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Commute Time (minutes each way)</label>
+          <input id="commuteTime" type="number" placeholder="e.g. 75"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Proximity to NG34 9JB (miles)</label>
+          <input id="proximityBase" type="number" placeholder="e.g. 35"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+        </div>
+      </div>
+    </section>
+
+    <!-- Childcare -->
+    <section class="bg-white mt-8 p-8 rounded-lg shadow-md space-y-6">
+      <h2 class="text-xl font-semibold border-b pb-2">Childcare & Wellbeing</h2>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Preschool Quality Rating (1–10)</label>
+          <input id="quality" type="number" min="1" max="10" placeholder="e.g. 8"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Ofsted Rating</label>
+          <select id="ofsted" class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+            <option value="outstanding">Outstanding</option>
+            <option value="good">Good</option>
+            <option value="requires">Requires Improvement</option>
+            <option value="inadequate">Inadequate</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Paid Wrap‑Around Care?</label>
+          <select id="wrapCare" class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Childcare Costs (£/month)</label>
+          <input id="childcare" type="number" placeholder="e.g. 1200"
+            class="mt-1 w-full rounded-md border-gray-300 focus:ring-indigo-500">
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <button id="calculateBtn" class="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition">Calculate</button>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="hidden bg-white mt-8 p-8 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold border-b pb-2 mb-4">Results Dashboard</h2>
+      <div class="space-y-2">
+        <p><strong>Total Monthly Expenses:</strong> £<span id="totalExpenses">0</span></p>
+        <p><strong>Net Monthly Cash Flow:</strong> £<span id="cashFlow">0</span></p>
+        <p><strong>Runway Estimate:</strong> <span id="runwayMonths">0</span> months</p>
+      </div>
+
+      <!-- Life Design Index -->
+      <div class="mt-6">
+        <p class="font-semibold mb-2">Life Design Index</p>
+        <div class="w-full bg-gray-200 rounded-full h-4">
+          <div id="ldiBar" class="bar bg-indigo-600 h-4 rounded-full" style="width:0%"></div>
+        </div>
+        <p class="text-sm text-gray-700 mt-1"><span id="ldiScore">0</span>/100</p>
+      </div>
+
+      <!-- Cost Breakdown Chart -->
+      <div class="mt-8">
+        <p class="font-semibold mb-2">Monthly Expense Distribution</p>
+        <svg id="chart" class="w-full h-40"></svg>
+      </div>
+
+      <p id="insight" class="mt-6 font-medium text-indigo-700"></p>
+    </section>
+
+    <footer class="mt-12 text-center text-sm text-gray-500">
+      © 2024 Transition Budget Simulator — Data‑driven life‑design for UK founders and families.
+    </footer>
+  </div>
+
+<script>
+document.getElementById('calculateBtn').addEventListener('click',()=>{
+  const val=id=>parseFloat(document.getElementById(id).value)||0;
+  const revenue=val('revenue'), relocation=val('relocation'), expenses=val('expenses'),
+        rent=val('rent'), commute=val('commute'), utilities=val('utilities'),
+        council=val('council'), childcare=val('childcare'),
+        distLondon=val('distanceLondon'), commuteTime=val('commuteTime'),
+        proximity=val('proximityBase'), quality=val('quality');
+  const wrapCare=document.getElementById('wrapCare').value;
+  const ofsted=document.getElementById('ofsted').value;
+
+  const wrapAdj=wrapCare==='yes'?0.9:1.1;
+  const ofstedMult=ofsted==='outstanding'?1.1:ofsted==='good'?1.05:ofsted==='requires'?0.95:0.9;
+  const adjustedChildcare=childcare*wrapAdj*ofstedMult;
+  const qualityMult=1+(quality-5)*0.02;
+
+  const livingCosts=rent+commute+utilities+council;
+  const totalMonthly=(expenses+livingCosts+adjustedChildcare)*qualityMult;
+  const cashFlow=revenue-totalMonthly;
+  const runway=cashFlow<0 && relocation>0?Math.floor(relocation/Math.abs(cashFlow)):Infinity;
+
+  // Life Design Index
+  const affordability=Math.max(0,100-((totalMonthly/Math.max(revenue,1))*100));
+  const qualityScore=quality*10;
+  const commutePenalty=Math.min(100,(commuteTime/1.5)+(distLondon/3));
+  const connectivity=Math.max(0,100-commutePenalty);
+  const proximityScore=Math.max(0,100-(proximity*1.5));
+  const ldi=Math.round((affordability*0.4)+(qualityScore*0.25)+(connectivity*0.25)+(proximityScore*0.1));
+
+  // Insights
+  let insight='';
+  if(cashFlow>0) insight='✅ Positive cashflow: relocation is financially sustainable.';
+  else if(runway<6) insight='⚠️ Runway under 6 months — review core living costs.';
+  else if(runway<12) insight='🕐 6–12 months runway: balance revenue growth and savings.';
+  else insight='💪 Strong runway — ample room for strategic growth.';
+  if(ldi>80) insight+=' Excellent Life Design Index.';
+  else if(ldi<60) insight+=' Consider adjusting for better wellbeing or proximity.';
+
+  // Update text
+  document.getElementById('totalExpenses').innerText=totalMonthly.toFixed(2);
+  document.getElementById('cashFlow').innerText=cashFlow.toFixed(2);
+  document.getElementById('runwayMonths').innerText=isFinite(runway)?runway:'∞';
+  document.getElementById('ldiScore').innerText=ldi;
+  document.getElementById('ldiBar').style.width=ldi+'%';
+  document.getElementById('insight').innerText=insight;
+  document.getElementById('results').classList.remove('hidden');
+
+  // --- Simple Cost Breakdown Chart ---
+  const svg=document.getElementById('chart');
+  svg.innerHTML='';
+  const labels=['Rent','Commute','Utilities','Council Tax','Childcare'];
+  const values=[rent,commute,utilities,council,adjustedChildcare];
+  const maxVal=Math.max(...values,1);
+  const width=svg.clientWidth;
+  const height=svg.clientHeight;
+  const barWidth=(width-60)/values.length;
+  values.forEach((v,i)=>{
+    const barHeight=(v/maxVal)*(height-30);
+    const x=30+i*barWidth;
+    const y=height-barHeight-20;
+    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',x);
+    rect.setAttribute('y',y);
+    rect.setAttribute('width',barWidth*0.6);
+    rect.setAttribute('height',barHeight);
+    rect.setAttribute('fill','#6366F1');
+    svg.appendChild(rect);
+    const text=document.createElementNS('http://www.w3.org/2000/svg','text');
+    text.setAttribute('x',x+barWidth*0.3);
+    text.setAttribute('y',height-5);
+    text.setAttribute('text-anchor','middle');
+    text.setAttribute('font-size','10');
+    text.textContent=labels[i];
+    svg.appendChild(text);
+  });
+});
+</script>
+</body>
+</html>
