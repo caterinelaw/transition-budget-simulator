@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Hub Dashboard - Strategic Life Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .card-animate {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        .rank-medal {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+        .rank-medal.silver {
+            background: linear-gradient(135deg, #e5e7eb 0%, #9ca3af 100%);
+        }
+        .rank-medal.bronze {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="mb-10">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Growth Hub Dashboard</h1>
+            <p class="text-gray-600 text-lg">Strategic location analysis for scalable business growth and family stability</p>
+        </header>
+
+        <!-- Metrics Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Analysis Weight</p>
+                        <p class="text-2xl font-bold text-gray-900">50/50</p>
+                    </div>
+                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Quality vs Affordability</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Regions Analyzed</p>
+                        <p class="text-2xl font-bold text-gray-900" id="regionCount">5</p>
+                    </div>
+                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">UK Strategic Locations</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Top Stability Score</p>
+                        <p class="text-2xl font-bold text-gray-900" id="topScore">-</p>
+                    </div>
+                    <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Family-Business Balance</p>
+            </div>
+        </div>
+
+        <!-- Rankings -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-10 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Strategic Location Rankings</h2>
+            <div id="rankings" class="space-y-4">
+                <!-- Rankings will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Detailed Regional Analysis</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Region</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ofsted Rating</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">2-Bed Rent</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Childcare</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Monthly</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stability Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailTable" class="bg-white divide-y divide-gray-200">
+                        <!-- Details will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample JSON data for UK regions
+        const regionData = [
+            {
+                "region": "Greater Manchester",
+                "city": "Manchester",
+                "ofsted_rating": "Good",
+                "avg_rent_2bed": 1250,
+                "childcare_monthly": 850,
+                "transport_links": "Excellent",
+                "tech_hub_score": 8.5,
+                "schools_outstanding_pct": 18
+            },
+            {
+                "region": "West Midlands",
+                "city": "Birmingham",
+                "ofsted_rating": "Good",
+                "avg_rent_2bed": 1100,
+                "childcare_monthly": 780,
+                "transport_links": "Very Good",
+                "tech_hub_score": 7.8,
+                "schools_outstanding_pct": 15
+            },
+            {
+                "region": "Bristol & Bath",
+                "city": "Bristol",
+                "ofsted_rating": "Outstanding",
+                "avg_rent_2bed": 1450,
+                "childcare_monthly": 920,
+                "transport_links": "Good",
+                "tech_hub_score": 8.2,
+                "schools_outstanding_pct": 22
+            },
+            {
+                "region": "Leeds City Region",
+                "city": "Leeds",
+                "ofsted_rating": "Good",
+                "avg_rent_2bed": 950,
+                "childcare_monthly": 700,
+                "transport_links": "Good",
+                "tech_hub_score": 7.5,
+                "schools_outstanding_pct": 16
+            },
+            {
+                "region": "Cambridge & Peterborough",
+                "city": "Cambridge",
+                "ofsted_rating": "Outstanding",
+                "avg_rent_2bed": 1650,
+                "childcare_monthly": 1100,
+                "transport_links": "Very Good",
+                "tech_hub_score": 9.2,
+                "schools_outstanding_pct": 28
+            }
+        ];
+
+        // Calculate Stability Score
+        function calculateStabilityScore(region) {
+            // Childcare Quality Score (50%)
+            const ofstedScore = region.ofsted_rating === "Outstanding" ? 10 : 
+                               region.ofsted_rating === "Good" ? 7 : 
+                               region.ofsted_rating === "Requires Improvement" ? 4 : 2;
+            
+            // Total monthly costs
+            const totalMonthlyCost = region.avg_rent_2bed + region.childcare_monthly;
+            
+            // Affordability Score (50%) - inverse relationship with costs
+            // Normalize based on range in dataset
+            const maxCost = Math.max(...regionData.map(r => r.avg_rent_2bed + r.childcare_monthly));
+            const minCost = Math.min(...regionData.map(r => r.avg_rent_2bed + r.childcare_monthly));
+            const affordabilityScore = 10 * (1 - (totalMonthlyCost - minCost) / (maxCost - minCost));
+            
+            // Combined Stability Score
+            const stabilityScore = (ofstedScore * 0.5) + (affordabilityScore * 0.5);
+            
+            return {
+                score: stabilityScore.toFixed(1),
+                qualityScore: ofstedScore,
+                affordabilityScore: affordabilityScore.toFixed(1),
+                totalMonthlyCost: totalMonthlyCost
+            };
+        }
+
+        // Process and rank regions
+        function processRegions() {
+            const processedRegions = regionData.map(region => {
+                const scores = calculateStabilityScore(region);
+                return {
+                    ...region,
+                    stabilityScore: parseFloat(scores.score),
+                    qualityScore: scores.qualityScore,
+                    affordabilityScore: parseFloat(scores.affordabilityScore),
+                    totalMonthlyCost: scores.totalMonthlyCost
+                };
+            });
+
+            // Sort by stability score (descending)
+            processedRegions.sort((a, b) => b.stabilityScore - a.stabilityScore);
+            
+            return processedRegions;
+        }
+
+        // Render rankings
+        function renderRankings(regions) {
+            const rankingsContainer = document.getElementById('rankings');
+            rankingsContainer.innerHTML = '';
+
+            regions.forEach((region, index) => {
+                const rank = index + 1;
+                const medalClass = rank === 1 ? 'rank-medal' : 
+                                  rank === 2 ? 'rank-medal silver' : 
+                                  rank === 3 ? 'rank-medal bronze' : '';
+                
+                const isTopHub = rank === 1;
+                
+                const rankCard = document.createElement('div');
+                rankCard.className = `card-animate flex items-center justify-between p-4 rounded-lg border ${
+                    isTopHub ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200 bg-gray-50'
+                }`;
+                rankCard.style.animationDelay = `${index * 0.1}s`;
+                
+                rankCard.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            ${rank <= 3 ? 
+                                `<div class="${medalClass} w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg">${rank}</div>` :
+                                `<div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-700 font-bold text-lg">${rank}</div>`
+                            }
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">${region.region}</h3>
+                            <p class="text-sm text-gray-600">${region.city} • ${region.ofsted_rating} Rating</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center space-x-2">
+                            ${isTopHub ? '<span class="bg-yellow-400 text-yellow-900 text-xs font-semibold px-2 py-1 rounded">STABILITY LEADER</span>' : ''}
+                            <div>
+                                <p class="text-2xl font-bold text-gray-900">${region.stabilityScore.toFixed(1)}</p>
+                                <p class="text-xs text-gray-500">Stability Score</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                rankingsContainer.appendChild(rankCard);
+            });
+        }
+
+        // Render detailed table
+        function renderDetailTable(regions) {
+            const tableBody = document.getElementById('detailTable');
+            tableBody.innerHTML = '';
+
+            regions.forEach(region => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${region.region}</div>
+                        <div class="text-sm text-gray-500">${region.city}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            region.ofsted_rating === 'Outstanding' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+                        }">
+                            ${region.ofsted_rating}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">£${region.avg_rent_2bed}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">£${region.childcare_monthly}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">£${region.totalMonthlyCost}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-1 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full" style="width: ${region.stabilityScore * 10}%"></div>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-900">${region.stabilityScore.toFixed(1)}</span>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            const rankedRegions = processRegions();
+            
+            // Update top score
+            document.getElementById('topScore').textContent = rankedRegions[0].stabilityScore.toFixed(1) + '/10';
+            document.getElementById('regionCount').textContent = regionData.length;
+            
+            // Render components
+            renderRankings(rankedRegions);
+            renderDetailTable(rankedRegions);
+        }
+
+        // Run on load
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
