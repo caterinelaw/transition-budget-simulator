@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Life Design - Growth Hub Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <div class="text-center mb-10 fade-in">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Growth Hub Analyzer</h1>
+            <p class="text-gray-600 text-lg">Strategic relocation intelligence for solo entrepreneurs</p>
+        </div>
+
+        <!-- Regional Rankings -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Regional Stability Rankings</h2>
+            <div id="rankingsContainer" class="space-y-4"></div>
+        </div>
+
+        <!-- Budget Simulator -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Financial Runway Calculator</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Current Monthly Revenue (£)
+                    </label>
+                    <input type="number" id="monthlyRevenue" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="e.g., 5000" value="5000">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        One-time Relocation Costs (£)
+                    </label>
+                    <input type="number" id="relocationCosts" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="e.g., 3000" value="3000">
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Select Target Region
+                </label>
+                <select id="regionSelect" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </select>
+            </div>
+            
+            <button onclick="calculateRunway()" 
+                    class="mt-6 w-full md:w-auto px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">
+                Calculate Financial Runway
+            </button>
+            
+            <div id="runwayResult" class="mt-6 hidden">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Projection Results</h3>
+                    <div id="runwayDetails" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transparency Footer -->
+        <footer class="bg-gray-100 rounded-lg p-6 text-center fade-in">
+            <div class="flex items-center justify-center mb-2">
+                <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="text-sm font-medium text-gray-600">EU AI Act Disclosure</span>
+            </div>
+            <p class="text-sm text-gray-500">
+                This tool is classified as <strong>Limited Risk</strong> under the EU AI Act. 
+                Data is AI-synthesized for illustrative purposes. Human oversight and independent verification 
+                of all financial and relocation decisions are required. Not a substitute for professional advice.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Regional data with synthesized values
+        const regions = [
+            {
+                name: 'Manchester',
+                rent: 1200,
+                childcare: 950,
+                ofstedRating: 8.5,
+                businessEnvironment: 'Strong tech scene, growing startup ecosystem',
+                qualityOfLife: 'Vibrant culture, excellent transport links'
+            },
+            {
+                name: 'Bristol',
+                rent: 1400,
+                childcare: 1000,
+                ofstedRating: 9.0,
+                businessEnvironment: 'Creative hub, strong aerospace and tech sectors',
+                qualityOfLife: 'Green spaces, cultural diversity'
+            },
+            {
+                name: 'Leeds',
+                rent: 1000,
+                childcare: 850,
+                ofstedRating: 7.5,
+                businessEnvironment: 'Financial services, digital growth',
+                qualityOfLife: 'Affordable, good schools'
+            },
+            {
+                name: 'Glasgow',
+                rent: 950,
+                childcare: 800,
+                ofstedRating: 8.0,
+                businessEnvironment: 'Tech renaissance, creative industries',
+                qualityOfLife: 'Cultural heritage, lower costs'
+            },
+            {
+                name: 'Sheffield',
+                rent: 900,
+                childcare: 750,
+                ofstedRating: 7.0,
+                businessEnvironment: 'Advanced manufacturing, emerging tech',
+                qualityOfLife: 'Green city, Peak District access'
+            },
+            {
+                name: 'London',
+                rent: 2500,
+                childcare: 1600,
+                ofstedRating: 8.0,
+                businessEnvironment: 'Global financial center, unlimited opportunities',
+                qualityOfLife: 'World-class amenities, high competition'
+            },
+            {
+                name: 'Cambridge',
+                rent: 1800,
+                childcare: 1300,
+                ofstedRating: 9.5,
+                businessEnvironment: 'Tech and biotech hub, university ecosystem',
+                qualityOfLife: 'Historic charm, excellent schools'
+            }
+        ];
+
+        // Calculate stability score
+        function calculateStabilityScore(region) {
+            const maxRent = Math.max(...regions.map(r => r.rent));
+            const maxChildcare = Math.max(...regions.map(r => r.childcare));
+            
+            // Affordability score (inverse relationship - lower cost = higher score)
+            const affordabilityScore = 10 - ((region.rent + region.childcare) / (maxRent + maxChildcare)) * 10;
+            
+            // Childcare quality score (direct from Ofsted rating)
+            const childcareScore = region.ofstedRating;
+            
+            // Combined score (50% each)
+            return (affordabilityScore * 0.5 + childcareScore * 0.5).toFixed(1);
+        }
+
+        // Rank regions
+        function rankRegions() {
+            return regions.map(region => ({
+                ...region,
+                stabilityScore: parseFloat(calculateStabilityScore(region))
+            })).sort((a, b) => b.stabilityScore - a.stabilityScore);
+        }
+
+        // Get rank badge color
+        function getRankBadgeColor(rank) {
+            if (rank === 1) return 'bg-yellow-400 text-yellow-900';
+            if (rank === 2) return 'bg-gray-300 text-gray-700';
+            if (rank === 3) return 'bg-orange-400 text-orange-900';
+            return 'bg-gray-200 text-gray-600';
+        }
+
+        // Get cost indicator color
+        function getCostIndicator(totalCost) {
+            const maxCost = Math.max(...regions.map(r => r.rent + r.childcare));
+            const ratio = totalCost / maxCost;
+            if (ratio < 0.5) return { color: 'text-green-600', label: 'Low' };
+            if (ratio < 0.75) return { color: 'text-yellow-600', label: 'Medium' };
+            return { color: 'text-red-600', label: 'High' };
+        }
+
+        // Display rankings
+        function displayRankings() {
+            const rankedRegions = rankRegions();
+            const container = document.getElementById('rankingsContainer');
+            
+            rankedRegions.forEach((region, index) => {
+                const rank = index + 1;
+                const totalCost = region.rent + region.childcare;
+                const costIndicator = getCostIndicator(totalCost);
+                
+                const regionCard = `
+                    <div class="border rounded-lg p-4 hover:shadow-md transition-shadow ${rank === 1 ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200'}">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold ${getRankBadgeColor(rank)}">
+                                        ${rank === 1 ? '👑 ' : ''}#${rank}
+                                    </span>
+                                    <h3 class="text-xl font-semibold text-gray-900">${region.name}</h3>
+                                    ${rank === 1 ? '<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">TOP STABILITY</span>' : ''}
+                                </div>
+                                
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm text-gray-600">Monthly Costs</span>
+                                            <span class="font-semibold ${costIndicator.color}">${costIndicator.label}</span>
+                                        </div>
+                                        <div class="space-y-1 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-gray-600">Rent:</span>
+                                                <span class="font-medium">£${region.rent.toLocaleString()}</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-gray-600">Childcare:</span>
+                                                <span class="font-medium">£${region.childcare.toLocaleString()}</span>
+                                            </div>
+                                            <div class="flex justify-between pt-1 border-t">
+                                                <span class="text-gray-700 font-medium">Total:</span>
+                                                <span class="font-semibold">£${totalCost.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="mb-2">
+                                            <span class="text-sm text-gray-600">Ofsted Rating</span>
+                                            <div class="flex items-center gap-2">
+                                                <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-blue-600 h-2 rounded-full" style="width: ${region.ofstedRating * 10}%"></div>
+                                                </div>
+                                                <span class="font-semibold text-sm">${region.ofstedRating}/10</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-2">${region.businessEnvironment}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-4 text-center">
+                                <div class="text-3xl font-bold text-blue-600">${region.stabilityScore}</div>
+                                <div class="text-xs text-gray-500 font-medium">STABILITY<br>SCORE</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += regionCard;
+            });
+        }
+
+        // Populate region select
+        function populateRegionSelect() {
+            const select = document.getElementById('regionSelect');
+            rankRegions().forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.name;
+                option.textContent = `${region.name} (Score: ${region.stabilityScore})`;
+                select.appendChild(option);
+            });
+        }
+
+        // Calculate financial runway
+        function calculateRunway() {
+            const revenue = parseFloat(document.getElementById('monthlyRevenue').value) || 0;
+            const relocationCosts = parseFloat(document.getElementById('relocationCosts').value) || 0;
+            const selectedRegion = regions.find(r => r.name === document.getElementById('regionSelect').value);
+            
+            if (!selectedRegion) return;
+            
+            const monthlyExpenses = selectedRegion.rent + selectedRegion.childcare;
+            const netMonthly = revenue - monthlyExpenses;
+            const runway = netMonthly > 0 ? 'Sustainable' : Math.floor(Math.abs(relocationCosts / netMonthly));
+            
+            const resultDiv = document.getElementById('runwayResult');
+            const detailsDiv = document.getElementById('runwayDetails');
+            
+            detailsDiv.innerHTML = `
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Selected Region:</span>
+                    <span class="font-semibold">${selectedRegion.name}</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Monthly Revenue:</span>
+                    <span class="font-semibold text-green-600">+£${revenue.toLocaleString()}</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Monthly Expenses:</span>
+                    <span class="font-semibold text-red-600">-£${monthlyExpenses.toLocaleString()}</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Net Monthly:</span>
+                    <span class="font-semibold ${netMonthly >= 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${netMonthly >= 0 ? '+' : ''}£${netMonthly.toLocaleString()}
+                    </span>
+                </div>
+                <div class="mt-4 pt-4 border-t">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold ${netMonthly > 0 ? 'text-green-600' : 'text-blue-600'}">
+                            ${runway === 'Sustainable' ? '∞' : runway} ${runway === 'Sustainable' ? '' : 'months'}
+                        </div>
+                        <div class="text-sm text-gray-600 mt-2">
+                            ${runway === 'Sustainable' 
+                                ? 'Positive cash flow achieved' 
+                                : `Financial runway with £${relocationCosts.toLocaleString()} buffer`}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            displayRankings();
+            populateRegionSelect();
+        });
+    </script>
+</body>
+</html>
